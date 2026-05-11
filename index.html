@@ -1649,11 +1649,11 @@ function renderIrregular() {
   if (irregularStep === 0) {
     getEl('irrStepLabel').textContent = '👉 ŘEKNI INFINITIV';
     getEl('irrStatus').textContent = 'Řekni anglický infinitiv';
-    autoSpeak(verb.inf);
+    setTimeout(() => autoSpeak(verb.inf), 1000);
   } else {
     getEl('irrStepLabel').textContent = '👉 ŘEKNI MINULÝ ČAS';
     getEl('irrStatus').textContent = 'Řekni minulý čas';
-    autoSpeak(verb.past);
+    setTimeout(() => autoSpeak(verb.past), 1000);
   }
 }
 
