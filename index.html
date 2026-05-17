@@ -1730,22 +1730,23 @@ getEl('nextButton').onclick = () => {
         renderCard();
     }
 };
-  function showChunkParts(lessonNum) {
-  getEl('chunkSection').style.display = 'none';
-  getEl('chunkPartsSection').style.display = 'block';
-  const container = getEl('chunkPartsButtons');
+function showChunkParts(lessonNum) {
+  const container = getEl('chunkLessonButtons');
   container.innerHTML = '';
-  const chunkTitle = getEl('chunkPartsTitle');
-  chunkTitle.innerHTML = `<div style="font-size:2em;">💬</div><div style="font-weight:900; font-size:1.3em; color:#7b4bc7;">LEKCE ${lessonNum}</div>`;
-  const parts = Object.keys(vocab).filter(key => key.startsWith(lessonNum + 'D') || key.startsWith(lessonNum + 'C'));
+  const titleDiv = getEl('lessonTitle');
+  if (titleDiv) titleDiv.innerHTML = `<div style="width:120px;height:120px;border-radius:50%;border:4px solid #7b4bc7;overflow:hidden;margin:0 auto;"><img src="CHARLIE.jpg" style="width:100%;height:100%;object-fit:cover;transform:scale(2.2);transform-origin:center 20%;"></div><div style="font-weight:900;font-size:1.3em;color:#7b4bc7;margin-top:8px;">💬 SLOVNÍ SPOJENÍ</div><div style="color:#7b4bc7;font-weight:700;margin-bottom:18px;">Lekce ${lessonNum} – vyber si část!</div>`;
+  const parts = Object.keys(vocab).filter(key => key.startsWith(lessonNum + 'C') || key.startsWith(lessonNum + 'D'));
   const colors = ['#8A2BE2', '#FF1493', '#1E90FF', '#32CD32', '#FF8C00', '#00CED1'];
   if (parts.length === 0) {
-    container.innerHTML = '<p style="text-align:center; color:#999;">Zatím žádná slovní spojení.</p>';
+    const msg = document.createElement('p');
+    msg.style.cssText = 'text-align:center;color:#999;';
+    msg.textContent = 'Zatím žádná slovní spojení pro tuto lekci.';
+    container.appendChild(msg);
   } else {
     parts.forEach((key, index) => {
       const card = document.createElement('div');
       card.className = 'menu-card';
-      card.style.cssText = `background:${colors[index % colors.length]}; color:white; padding:20px; border-radius:20px; text-align:center; cursor:pointer; font-weight:800; margin-bottom:12px; border:none; box-shadow: 0 4px 15px rgba(0,0,0,0.05);`;
+      card.style.cssText = `background:${colors[index % colors.length]};color:white;padding:20px;border-radius:20px;text-align:center;cursor:pointer;font-weight:800;margin-bottom:12px;border:none;box-shadow:0 4px 15px rgba(0,0,0,0.05);`;
       card.innerHTML = key;
       card.onclick = () => startLesson(key);
       container.appendChild(card);
@@ -1753,12 +1754,9 @@ getEl('nextButton').onclick = () => {
   }
   const backBtn = document.createElement('button');
   backBtn.className = 'secondary';
-  backBtn.style.cssText = 'margin-top:10px; width:100%; display:block;';
+  backBtn.style.cssText = 'margin-top:10px;width:100%;display:block;';
   backBtn.innerHTML = '← Zpět na lekce';
-  backBtn.onclick = () => {
-    getEl('chunkPartsSection').style.display = 'none';
-    getEl('chunkSection').style.display = 'block';
-  };
+  backBtn.onclick = () => showChunks();
   container.appendChild(backBtn);
 }
 </script>
