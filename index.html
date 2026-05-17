@@ -1736,31 +1736,48 @@ getEl('nextButton').onclick = () => {
     }
 };
 function showChunkParts(lessonNum) {
-  currentChunkLesson = lessonNum; const container = getEl('chunkLessonButtons');
+  currentChunkLesson = lessonNum;
+  var container = getEl('chunkLessonButtons');
   container.innerHTML = '';
-  const titleDiv = getEl('lessonTitle');
-  if (titleDiv) titleDiv.innerHTML = `<div style="width:120px;height:120px;border-radius:50%;border:4px solid #7b4bc7;overflow:hidden;margin:0 auto;"><img src="CHARLIE.jpg" style="width:100%;height:100%;object-fit:cover;transform:scale(2.2);transform-origin:center 20%;"></div><div style="font-weight:900;font-size:1.3em;color:#7b4bc7;margin-top:8px;">💬 SLOVNÍ SPOJENÍ</div><div style="color:#7b4bc7;font-weight:700;margin-bottom:18px;">Lekce ${lessonNum} – vyber si část!</div>`;
-  const parts = Object.keys(vocab).filter(key => key.startsWith(lessonNum + 'C') || key.startsWith(lessonNum + 'D'));
-  const colors = ['#8A2BE2', '#FF1493', '#1E90FF', '#32CD32', '#FF8C00', '#00CED1'];
+  var parts = Object.keys(vocab).filter(function(key) {
+    return key.startsWith(lessonNum + 'C') || key.startsWith(lessonNum + 'D');
+  });
+  var colors = ['#8A2BE2', '#FF1493', '#1E90FF', '#32CD32', '#FF8C00', '#00CED1'];
   if (parts.length === 0) {
-    const msg = document.createElement('p');
+    var msg = document.createElement('p');
     msg.style.cssText = 'text-align:center;color:#999;';
-    msg.textContent = 'Zatím žádná slovní spojení pro tuto lekci.';
+    msg.textContent = 'Zatim zadna slovni spojeni pro tuto lekci.';
     container.appendChild(msg);
   } else {
-    parts.forEach((key, index) => {
-      const card = document.createElement('div');
+    parts.forEach(function(key, index) {
+      var card = document.createElement('div');
       card.className = 'menu-card';
-      card.style.cssText = `background:${colors[index % colors.length]};color:white;padding:20px;border-radius:20px;text-align:center;cursor:pointer;font-weight:800;margin-bottom:12px;border:none;box-shadow:0 4px 15px rgba(0,0,0,0.05);`;
+      card.style.background = colors[index % colors.length];
+      card.style.color = 'white';
+      card.style.padding = '20px';
+      card.style.borderRadius = '20px';
+      card.style.textAlign = 'center';
+      card.style.cursor = 'pointer';
+      card.style.fontWeight = '800';
+      card.style.marginBottom = '12px';
       card.innerHTML = key;
-      card.onclick = () => { getEl('chunkSection').style.display = 'none'; getEl('lessonSection').style.display = 'block'; startLesson(key); };
+      card.onclick = (function(k) {
+        return function() {
+          getEl('chunkSection').style.display = 'none';
+          getEl('lessonSection').style.display = 'block';
+          startLesson(k);
+        };
+      })(key);
       container.appendChild(card);
     });
   }
-  const backBtn = document.createElement('button');
+  var backBtn = document.createElement('button');
   backBtn.className = 'secondary';
   backBtn.style.cssText = 'margin-top:10px;width:100%;display:block;';
   backBtn.innerHTML = '← Zpět na lekce';
+  backBtn.onclick = function() { showChunks(); };
+  container.appendChild(backBtn);
+}
   backBtn.onclick = () => showChunks();
   container.appendChild(backBtn);
 }
