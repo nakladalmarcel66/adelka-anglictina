@@ -12,7 +12,7 @@
   color: #241b58;
   margin-top: 40px; /* Tohle vytvoří mezeru shora */
   margin-bottom: 20px;
-  text-align: center;
+  text-align: center;F
   line-height: 1.2;
 }
       * {
@@ -2007,12 +2007,7 @@ getEl('testChunkButton').onclick = () => {
 getEl('startChunkButton').onclick = () => {
   chunkAnswerVisible = true;
 
-  if (currentChunkKey === '__generated_chunks_lesson_1__') {
-    renderGeneratedChunkCard();
-  } else {
-    renderChunkCard();
-  }
-};
+  renderChunkCard();
 
 getEl('listenChunkButton').onclick = () => {
   const chunk = currentChunkKey === '__generated_chunks_lesson_1__'
