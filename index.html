@@ -1957,11 +1957,7 @@ function showGeneratedChunksMenu() {
     card.style.cssText = `background:${cardColor}; color:white; padding:20px; border-radius:20px; text-align:center; cursor:pointer; font-weight:800; margin-bottom:12px; border:none; box-shadow: 0 4px 15px rgba(0,0,0,0.05);`;
     card.innerHTML = `Lekce ${i}`;
     card.onclick = () => {
-  if (i === 1) {
-    startGeneratedChunksLesson1();
-  } else {
-    alert(`Lekce ${i} zatím nemá obsah.`);
-  }
+  alert(`Lekce ${i} zatím nemá obsah.`);
 };
     container.appendChild(card);
   }
