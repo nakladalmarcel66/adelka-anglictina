@@ -1584,29 +1584,8 @@ function goBackChunks() {
 
   renderGeneratedChunkCard();
 }
-function renderGeneratedChunkCard() {
-  const item = generatedChunksLesson1[currentChunkIndex];
-  if (!item) return;
 
-  getEl('chunkEmoji').textContent = item.emo || '';
-  getEl('chunkCs').textContent = item.cz || '';
-
-  if (chunkMode === 'test' && !chunkAnswerVisible) {
-    getEl('chunkEn').textContent = '???';
-    getEl('chunkSay').textContent = '';
-  } else {
-    getEl('chunkEn').textContent = item.en || '';
-    getEl('chunkSay').textContent = item.h || '';
-  }
-
-  const status = getEl('chunksStatusText');
-  if (status) status.textContent = '';
-
-  if (chunkMode === 'learn') {
-    speak(item.en);
-  }
-}
-function speak(text) {
+  function speak(text) {
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'en-GB';
   utterance.rate = 0.60;
