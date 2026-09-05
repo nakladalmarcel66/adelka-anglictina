@@ -1952,16 +1952,6 @@ let currentChunkIndex = 0;
 let chunkMode = 'learn';
 let chunkAnswerVisible = true;
 
-  const backBtn = document.createElement('button');
-  backBtn.className = 'secondary';
-  backBtn.style.marginTop = '10px';
-  backBtn.innerHTML = '← Zpět na úvod';
-  backBtn.onclick = () => {
-    getEl('chunksSection').style.display = 'none';
-    getEl('homeSection').style.display = 'block';
-  };
-  container.appendChild(backBtn);
-
 function showChunks() {
   getEl('homeSection').style.display = 'none';
   getEl('lessonSection').style.display = 'none';
