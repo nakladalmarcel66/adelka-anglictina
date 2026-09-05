@@ -1485,18 +1485,6 @@ const colors = ['#8A2BE2', '#FF1493', '#1E90FF', '#32CD32', '#FF8C00', '#00CED1'
         container.appendChild(card);
     });
     
-    // VRACÍME: Tlačítko zpět na úvodní fotky
-    const backBtn = document.createElement('button');
-    backBtn.className = 'secondary';
-    backBtn.style.marginTop = '10px';
-    backBtn.innerHTML = '← Zpět na úvod';
-    backBtn.onclick = () => {
-        getEl('lessonSection').style.display = 'none';
-        getEl('homeSection').style.display = 'block';
-    };
-    container.appendChild(backBtn);
-}
-
 function showParts(lessonNum) {
     const container = getEl('lessonButtons');
     container.innerHTML = '';
