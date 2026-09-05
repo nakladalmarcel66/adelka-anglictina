@@ -2043,11 +2043,12 @@ getEl('nextChunkButton').onclick = () => {
     ? generatedChunksLesson1
     : chunks[currentChunkKey];
 
-  if (currentChunkIndex >= activeChunks.length) {
-    alert('Skvělá práce! Prošla jsi všechny fráze z této lekce.');
-    getEl('chunksCard').style.display = 'none';
-    getEl('chunksPicker').style.display = 'block';
-    currentChunkIndex = 0;
+if (currentChunkIndex >= activeChunks.length) {
+  alert('Skvělé! Prošla jsi všechny chunky z této lekce.');
+  getEl('chunksCard').style.display = 'none';
+  showGeneratedChunksMenu();
+  currentChunkIndex = 0;
+}
   } else {
     if (chunkMode === 'test') chunkAnswerVisible = false;
 
