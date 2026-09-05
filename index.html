@@ -1996,12 +1996,7 @@ getEl('learnChunkButton').onclick = () => {
   chunkMode = 'learn';
   chunkAnswerVisible = true;
 
-  if (currentChunkKey === '__generated_chunks_lesson_1__') {
-    renderGeneratedChunkCard();
-  } else {
-    renderChunkCard();
-  }
-};
+ renderChunkCard();
 
 getEl('testChunkButton').onclick = () => {
   chunkMode = 'test';
