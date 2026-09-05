@@ -1746,6 +1746,36 @@ function renderCard() {
   const word = vocab[currentPartKey][currentWordIndex];
   listenAndCheck(word.en, null, getEl('statusText'));
 };
+  getEl('learnButton').onclick = () => {
+  mode = 'learn';
+  answerVisible = true;
+  renderCard();
+};
+
+getEl('testButton').onclick = () => {
+  mode = 'test';
+  answerVisible = false;
+  renderCard();
+};
+
+getEl('startButton').onclick = () => {
+  answerVisible = true;
+  renderCard();
+};
+
+getEl('nextButton').onclick = () => {
+  currentWordIndex++;
+
+  if (currentWordIndex >= vocab[currentPartKey].length) {
+    currentWordIndex = 0;
+  }
+
+  if (mode === 'test') {
+    answerVisible = false;
+  }
+
+  renderCard();
+};
 const irregularVerbs = [
   {cz:'BÝT', inf:'be', past:'was/were', hi:'bí', hp:'woz/wer'},
   {cz:'STÁT SE', inf:'become', past:'became', hi:'bi-kam', hp:'bi-kejm'},
