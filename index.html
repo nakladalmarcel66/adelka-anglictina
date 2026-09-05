@@ -1915,41 +1915,6 @@ getEl('grade7Button').onclick = () => {
 };
   getEl('vocabMenuButton').onclick = () => { unlockSpeech(); showVocab(); };
 getEl('chunksMenuButton').onclick = () => { unlockSpeech(); showChunks(); };
-function showGeneratedChunksMenu() {
-  getEl('homeSection').style.display = 'none';
-  getEl('lessonSection').style.display = 'none';
-  getEl('irregularSection').style.display = 'none';
-  getEl('chunksSection').style.display = 'block';
-  getEl('chunksPicker').style.display = 'block';
-  getEl('chunksCard').style.display = 'none';
-
-  const container = getEl('chunksButtons');
-  container.innerHTML = '';
-
-  const colors = ['#8A2BE2', '#FF1493', '#1E90FF', '#32CD32', '#FF8C00', '#00CED1'];
-
-  for (let i = 1; i <= 6; i++) {
-    const card = document.createElement('div');
-    card.className = 'menu-card';
-    const cardColor = colors[(i - 1) % colors.length];
-    card.style.cssText = `background:${cardColor}; color:white; padding:20px; border-radius:20px; text-align:center; cursor:pointer; font-weight:800; margin-bottom:12px; border:none; box-shadow: 0 4px 15px rgba(0,0,0,0.05);`;
-    card.innerHTML = `Lekce ${i}`;
-    card.onclick = () => {
-  alert(`Lekce ${i} zatím nemá obsah.`);
-};
-    container.appendChild(card);
-  }
-
-  const backBtn = document.createElement('button');
-  backBtn.className = 'secondary';
-  backBtn.style.marginTop = '10px';
-  backBtn.innerHTML = '← Zpět na úvod';
-  backBtn.onclick = () => {
-    getEl('chunksSection').style.display = 'none';
-    getEl('homeSection').style.display = 'block';
-  };
-  container.appendChild(backBtn);
-}
 
 let currentChunkKey = null;
 let currentChunkIndex = 0;
