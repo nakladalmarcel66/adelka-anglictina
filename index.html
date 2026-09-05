@@ -1501,15 +1501,6 @@ function showParts(lessonNum) {
     const container = getEl('lessonButtons');
     container.innerHTML = '';
 
-    if (lessonNum === '1') {
-        const generatedCard = document.createElement('div');
-        generatedCard.className = 'menu-card';
-        generatedCard.style.cssText = 'background:#e8fff8; color:#15937d; border:3px solid #20b89b; padding:15px; border-radius:20px; text-align:center; cursor:pointer; font-weight:800; margin-bottom:12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);';
-        generatedCard.innerHTML = 'chunks generovaná z lekce 1';
-        generatedCard.onclick = () => startGeneratedChunksLesson1();
-        container.appendChild(generatedCard);
-    }
-
     const parts = Object.keys(vocab).filter(key => key.startsWith(lessonNum));
 
     parts.forEach(key => {
