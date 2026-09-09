@@ -1988,9 +1988,9 @@ getEl('nextChunkButton').onclick = () => {
 
 if (currentChunkIndex >= activeChunks.length) {
   alert('Skvělé! Prošla jsi všechny chunky z této lekce.');
-  getEl('chunksCard').style.display = 'none';
-  showGeneratedChunksMenu();
   currentChunkIndex = 0;
+  getEl('chunksCard').style.display = 'none';
+  getEl('chunksPicker').style.display = 'block';
 } else {
     if (chunkMode === 'test') chunkAnswerVisible = false;
 
