@@ -1635,6 +1635,8 @@ window.speechSynthesis.cancel();
 
   if (statusEl) statusEl.textContent = '🎤 Připravuji mikrofon...';
   let finished = false;
+  let retriesLeft = 1;
+let retryPending = false;
 
   const timeout = setTimeout(() => {
     if (finished) return;
@@ -1691,15 +1693,42 @@ setTimeout(() => {
 };
 
   recognition.onerror = function(event) {
+  if (finished) return;
+
+  if (event.error === 'no-speech' && retriesLeft > 0) {
+    retriesLeft--;
+    retryPending = true;
+    if (statusEl) statusEl.textContent = '🎤 Ještě tě poslouchám...';
+    return;
+  }
+
+  finished = true;
+  clearTimeout(timeout);
+
+  if (event.error === 'not-allowed') {
+    if (statusEl) statusEl.textContent = '🚫 Povol mikrofon a zkus znovu.';
+  } else {
+    if (statusEl) statusEl.textContent = '❌ Neslyším tě. Zkus znovu.';
+  }
+};
+
+  recognition.onend = function() {
+  if (!retryPending || finished) return;
+
+  retryPending = false;
+
+  setTimeout(() => {
     if (finished) return;
-    finished = true;
-    clearTimeout(timeout);
-    if (event.error === 'not-allowed') {
-      if (statusEl) statusEl.textContent = '🚫 Povol mikrofon a zkus znovu.';
-    } else {
-      if (statusEl) statusEl.textContent = '❌ Neslyším tě. Zkus znovu.';
+
+    if (statusEl) statusEl.textContent = '🎤 Poslouchám...';
+
+    try {
+      recognition.start();
+    } catch (e) {
+      if (statusEl) statusEl.textContent = '❌ Mikrofon se nespustil. Zkus znovu.';
     }
-  };
+  }, 300);
+};
 
 setTimeout(() => {
   if (finished) return;
