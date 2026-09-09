@@ -1580,6 +1580,20 @@ function goBackChunks() {
   renderGeneratedChunkCard();
 }
 
+  let preferredEnglishVoice = null;
+
+function prepareEnglishVoice() {
+  const voices = window.speechSynthesis.getVoices();
+
+  preferredEnglishVoice =
+    voices.find(v => v.lang === 'en-GB') ||
+    voices.find(v => v.lang && v.lang.startsWith('en')) ||
+    null;
+}
+
+prepareEnglishVoice();
+window.speechSynthesis.onvoiceschanged = prepareEnglishVoice;
+  
   function speak(text) {
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'en-GB';
@@ -1587,9 +1601,8 @@ function goBackChunks() {
   utterance.pitch = 1.0;
   utterance.volume = 0.35;
 
-  const voices = window.speechSynthesis.getVoices();
-  const preferredVoice = voices.find(v => v.lang === 'en-GB') || voices.find(v => v.lang && v.lang.startsWith('en'));
-  if (preferredVoice) utterance.voice = preferredVoice;
+  if (!preferredEnglishVoice) prepareEnglishVoice();
+if (preferredEnglishVoice) utterance.voice = preferredEnglishVoice;
 
   window.speechSynthesis.cancel();
   window.speechSynthesis.speak(utterance);
@@ -1726,7 +1739,7 @@ const correct = results.some(r => isCloseSingleWord(r, expected));
   const heard = results.filter(Boolean).join(' / ') || 'nic';
   statusEl.textContent = `❌ Slyším: „${heard}“. Zkus to znovu.`;
 }
-      window.speechSynthesis.cancel();
+      speak(expectedWord);
 setTimeout(() => {
   if (statusEl) statusEl.textContent = '';
 }, 2000);
