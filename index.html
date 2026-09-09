@@ -1631,7 +1631,7 @@ window.speechSynthesis.cancel();
   recognition.lang = 'en-GB';
   recognition.interimResults = false;
   recognition.continuous = true;
-  recognition.maxAlternatives = 3;
+  recognition.maxAlternatives = 10;
 
   if (statusEl) statusEl.textContent = '🎤 Připravuji mikrofon...';
   let finished = false;
@@ -1660,7 +1660,40 @@ let retryPending = false;
     .map(r => normalizeSpeech(r.transcript));
 
   const expected = normalizeSpeech(expectedWord);
-  const correct = results.some(r => r === expected);
+  const isCloseSingleWord = (heard, target) => {
+  if (heard === target) return true;
+
+  // Víceslovné fráze zůstávají přesné.
+  if (heard.includes(' ') || target.includes(' ') || target.length < 3) {
+    return false;
+  }
+
+  const row = Array.from(
+    { length: target.length + 1 },
+    (_, index) => index
+  );
+
+  for (let i = 1; i <= heard.length; i++) {
+    let previousDiagonal = row[0];
+    row[0] = i;
+
+    for (let j = 1; j <= target.length; j++) {
+      const saved = row[j];
+
+      row[j] = Math.min(
+        row[j] + 1,
+        row[j - 1] + 1,
+        previousDiagonal + (heard[i - 1] === target[j - 1] ? 0 : 1)
+      );
+
+      previousDiagonal = saved;
+    }
+  }
+
+  return row[target.length] <= 1;
+};
+
+const correct = results.some(r => isCloseSingleWord(r, expected));
 
   if (correct) {
     if (callback) {
