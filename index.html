@@ -1640,41 +1640,54 @@ window.speechSynthesis.cancel();
     finished = true;
     try { recognition.stop(); } catch(e) {}
     if (statusEl) statusEl.textContent = '❌ Neslyším tě. Zkus znovu.';
-  }, 7000);
+  }, 12000);
 
   recognition.onresult = function(event) {
-    if (finished) return;
-    finished = true;
-    clearTimeout(timeout);
-    const results = Array.from(event.results[0]).map(r => r.transcript.toLowerCase().trim());
-    const expected = expectedWord.toLowerCase().trim();
-    const correct = results.some(r => r === expected);
-    if (correct) {
-    if (correct) {
-  if (callback) { callback(true); }
-  else {
-    if (statusEl) statusEl.textContent = '✅ Výborně!';
+  if (finished) return;
+  finished = true;
+  clearTimeout(timeout);
 
-    const nextButtonId =
-      statusEl && statusEl.id === 'chunksStatusText'
-        ? 'nextChunkButton'
-        : 'nextButton';
+  const normalizeSpeech = text => text
+    .toLowerCase()
+    .replace(/[.,!?;:'’"]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-    setTimeout(() => {
-      window.speechSynthesis.cancel();
-      if (statusEl) statusEl.textContent = '';
-      getEl(nextButtonId).click();
-    }, 2200);
-  }
-} else {
-      if (callback) { callback(false); }
-      else {
-        if (statusEl) statusEl.textContent = '❌ Zkus to znovu!';
-        speak('Listen again: ' + expectedWord);
-        setTimeout(() => { if (statusEl) statusEl.textContent = ''; }, 2000);
-      }
+  const results = Array.from(event.results[0])
+    .map(r => normalizeSpeech(r.transcript));
+
+  const expected = normalizeSpeech(expectedWord);
+  const correct = results.some(r => r === expected);
+
+  if (correct) {
+    if (callback) {
+      callback(true);
+    } else {
+      if (statusEl) statusEl.textContent = '✅ Výborně!';
+
+      const nextButtonId =
+        statusEl && statusEl.id === 'chunksStatusText'
+          ? 'nextChunkButton'
+          : 'nextButton';
+
+      setTimeout(() => {
+        window.speechSynthesis.cancel();
+        if (statusEl) statusEl.textContent = '';
+        getEl(nextButtonId).click();
+      }, 2200);
     }
-  };
+  } else {
+    if (callback) {
+      callback(false);
+    } else {
+      if (statusEl) statusEl.textContent = '❌ Zkus to znovu!';
+      speak('Listen again: ' + expectedWord);
+      setTimeout(() => {
+        if (statusEl) statusEl.textContent = '';
+      }, 2000);
+    }
+  }
+};
 
   recognition.onerror = function(event) {
     if (finished) return;
