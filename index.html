@@ -1650,16 +1650,23 @@ window.speechSynthesis.cancel();
     const expected = expectedWord.toLowerCase().trim();
     const correct = results.some(r => r === expected);
     if (correct) {
-      if (callback) { callback(true); }
-      else {
-        if (statusEl) statusEl.textContent = '✅ Výborně!';
-        speak('Excellent!');
-        setTimeout(() => {
-          if (statusEl) statusEl.textContent = '';
-          getEl('nextButton').click();
-        }, 1500);
-      }
-    } else {
+    if (correct) {
+  if (callback) { callback(true); }
+  else {
+    if (statusEl) statusEl.textContent = '✅ Výborně!';
+
+    const nextButtonId =
+      statusEl && statusEl.id === 'chunksStatusText'
+        ? 'nextChunkButton'
+        : 'nextButton';
+
+    setTimeout(() => {
+      window.speechSynthesis.cancel();
+      if (statusEl) statusEl.textContent = '';
+      getEl(nextButtonId).click();
+    }, 2200);
+  }
+} else {
       if (callback) { callback(false); }
       else {
         if (statusEl) statusEl.textContent = '❌ Zkus to znovu!';
