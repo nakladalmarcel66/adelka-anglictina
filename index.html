@@ -1656,8 +1656,13 @@ let retryPending = false;
     .replace(/\s+/g, ' ')
     .trim();
 
-  const results = Array.from(event.results[0])
-    .map(r => normalizeSpeech(r.transcript));
+  const results = Array.from(event.results)
+  .slice(event.resultIndex)
+  .flatMap(result =>
+    Array.from(result).map(alternative =>
+      normalizeSpeech(alternative.transcript)
+    )
+  );
 
   const expected = normalizeSpeech(expectedWord);
   const isCloseSingleWord = (heard, target) => {
@@ -1716,7 +1721,10 @@ const correct = results.some(r => isCloseSingleWord(r, expected));
     if (callback) {
       callback(false);
     } else {
-      if (statusEl) statusEl.textContent = '❌ Zkus to znovu!';
+      if (statusEl) {
+  const heard = results.filter(Boolean).join(' / ') || 'nic';
+  statusEl.textContent = `❌ Slyším: „${heard}“. Zkus to znovu.`;
+}
       window.speechSynthesis.cancel();
 setTimeout(() => {
   if (statusEl) statusEl.textContent = '';
