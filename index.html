@@ -1774,8 +1774,11 @@ getEl('nextButton').onclick = () => {
   currentWordIndex++;
 
   if (currentWordIndex >= vocab[currentPartKey].length) {
-    currentWordIndex = 0;
-  }
+  currentWordIndex = 0;
+  getEl('lessonCard').style.display = 'none';
+  getEl('lessonPicker').style.display = 'block';
+  return;
+}
 
   if (mode === 'test') {
     answerVisible = false;
