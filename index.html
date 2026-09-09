@@ -1585,6 +1585,7 @@ function goBackChunks() {
   utterance.lang = 'en-GB';
   utterance.rate = 0.60;
   utterance.pitch = 1.0;
+  utterance.volume = 0.35;
 
   const voices = window.speechSynthesis.getVoices();
   const preferredVoice = voices.find(v => v.lang === 'en-GB') || voices.find(v => v.lang && v.lang.startsWith('en'));
@@ -1618,6 +1619,8 @@ function autoSpeak(text) {
 }
 
 function listenAndCheck(expectedWord, callback, statusEl) {
+window.speechSynthesis.cancel();
+  
     if (!statusEl) statusEl = document.getElementById('irrStatus') || document.getElementById('statusText');
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
