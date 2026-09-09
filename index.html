@@ -1632,7 +1632,7 @@ window.speechSynthesis.cancel();
   recognition.interimResults = false;
   recognition.maxAlternatives = 3;
 
-  if (statusEl) statusEl.textContent = '🎤 Poslouchám...';
+  if (statusEl) statusEl.textContent = '🎤 Připravuji mikrofon...';
   let finished = false;
 
   const timeout = setTimeout(() => {
@@ -1704,7 +1704,17 @@ window.speechSynthesis.cancel();
     try { recognition.stop(); } catch(e) {}
   };
 
-  recognition.start();
+setTimeout(() => {
+  if (finished) return;
+
+  if (statusEl) statusEl.textContent = '🎤 Poslouchám...';
+
+  try {
+    recognition.start();
+  } catch (e) {
+    if (statusEl) statusEl.textContent = '❌ Mikrofon se nespustil. Zkus znovu.';
+  }
+}, 400);
 }
 
 function renderCard() {
