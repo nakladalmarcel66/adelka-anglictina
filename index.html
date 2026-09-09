@@ -1630,6 +1630,7 @@ window.speechSynthesis.cancel();
   const recognition = new SpeechRecognition();
   recognition.lang = 'en-GB';
   recognition.interimResults = false;
+  recognition.continuous = true;
   recognition.maxAlternatives = 3;
 
   if (statusEl) statusEl.textContent = '🎤 Připravuji mikrofon...';
@@ -1681,10 +1682,10 @@ window.speechSynthesis.cancel();
       callback(false);
     } else {
       if (statusEl) statusEl.textContent = '❌ Zkus to znovu!';
-      speak('Listen again: ' + expectedWord);
-      setTimeout(() => {
-        if (statusEl) statusEl.textContent = '';
-      }, 2000);
+      window.speechSynthesis.cancel();
+setTimeout(() => {
+  if (statusEl) statusEl.textContent = '';
+}, 2000);
     }
   }
 };
@@ -1698,10 +1699,6 @@ window.speechSynthesis.cancel();
     } else {
       if (statusEl) statusEl.textContent = '❌ Neslyším tě. Zkus znovu.';
     }
-  };
-
-  recognition.onspeechend = function() {
-    try { recognition.stop(); } catch(e) {}
   };
 
 setTimeout(() => {
