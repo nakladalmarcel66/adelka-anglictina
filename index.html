@@ -1630,7 +1630,7 @@ window.speechSynthesis.cancel();
   const recognition = new SpeechRecognition();
   recognition.lang = 'en-GB';
   recognition.interimResults = false;
-  recognition.continuous = true;
+  recognition.continuous = false;
   recognition.maxAlternatives = 10;
 
   if (statusEl) statusEl.textContent = '🎤 Připravuji mikrofon...';
@@ -1643,12 +1643,13 @@ let retryPending = false;
     finished = true;
     try { recognition.stop(); } catch(e) {}
     if (statusEl) statusEl.textContent = '❌ Neslyším tě. Zkus znovu.';
-  }, 12000);
+  }, 10000);
 
   recognition.onresult = function(event) {
   if (finished) return;
   finished = true;
   clearTimeout(timeout);
+  try { recognition.stop(); } catch (e) {}
 
   const normalizeSpeech = text => text
     .toLowerCase()
